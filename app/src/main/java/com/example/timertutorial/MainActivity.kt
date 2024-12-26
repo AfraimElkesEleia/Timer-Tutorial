@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel by viewModels<CountDownViewModel>()
             TimerTutorialTheme {
                 Surface(
                     color = Color(0xFF101010),
@@ -32,7 +34,8 @@ class MainActivity : ComponentActivity() {
                         contentAlignment = Alignment.Center
                     ){
                         TimerScreen(
-                            totalTime = 2L * 60000L,
+                            viewModel = viewModel,
+                            totalTime = viewModel.totalTime,
                             handleColor = Color.Green,
                             inactiveColor = Color.DarkGray,
                             activeColor = Color(0xFF37B900),
