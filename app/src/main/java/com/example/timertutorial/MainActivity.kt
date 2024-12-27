@@ -18,13 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.timertutorial.ui.theme.TimerTutorialTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val viewModel by viewModels<CountDownViewModel>()
             TimerTutorialTheme {
                 Surface(
                     color = Color(0xFF101010),
@@ -34,8 +35,8 @@ class MainActivity : ComponentActivity() {
                         contentAlignment = Alignment.Center
                     ){
                         TimerScreen(
-                            viewModel = viewModel,
-                            totalTime = viewModel.totalTime,
+                            minutes = 2,
+                            seconds = 40,
                             handleColor = Color.Green,
                             inactiveColor = Color.DarkGray,
                             activeColor = Color(0xFF37B900),

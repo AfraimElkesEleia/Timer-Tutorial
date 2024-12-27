@@ -1,6 +1,7 @@
 package com.example.timertutorial
 
 import android.util.Log
+import android.view.View
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,29 +32,29 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
 fun TimerScreen(
+    minutes:Long,
+    seconds:Long,
     modifier: Modifier = Modifier,
-    viewModel: CountDownViewModel,
-    totalTime: Long,
     handleColor: Color,
     inactiveColor: Color,
     activeColor: Color,
     initialValue: Float = 1f,
     strokeWidth: Dp = 5.dp,
 ) {
+    val viewModel = viewModel<CountDownViewModel>(factory = ViewModelFactory(minutes,seconds))
     var size by remember {
         mutableStateOf(IntSize.Zero)
     }
     var value by remember { //Percentage value of time 0.77=>77%
         mutableFloatStateOf(initialValue)
-    }
-    var currentTime by remember {  //Time in millisecond we currently add
-        mutableLongStateOf(totalTime)
     }
     var isTimerRunnig by remember {
         mutableStateOf(false)
@@ -125,7 +126,6 @@ fun TimerScreen(
                     if (viewModel.isPlaying) {
                         viewModel.stopCountDownTimer()
                         isTimerRunnig = false
-                        currentTime = viewModel.timeLeft
                     } else {
                         viewModel.startCountDownTimer()
                         isTimerRunnig = true
@@ -134,7 +134,7 @@ fun TimerScreen(
                     viewModel.isFinished = false
                     isTimerRunnig = true
                     value = 1f
-                    viewModel.timeLeft = totalTime
+                    viewModel.timeLeft = viewModel.totalTime
                     viewModel.startCountDownTimer()
                 }
             },
